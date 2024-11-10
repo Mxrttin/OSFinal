@@ -4,4 +4,6 @@ export class Pedido {
     usuario!:number;
     total!:number;
     estado!:number;
+    nombre_usuario!:string
+    nombre_estado!:string
 }

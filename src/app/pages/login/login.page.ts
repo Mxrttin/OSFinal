@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth.service';
+import { CarritoService } from 'src/app/services/carrito.service';
 import { DbService } from 'src/app/services/db.service';
 import { Usuario } from 'src/app/services/usuario';
 
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   loginUser: string = '';
   passwordUser: string = '';
 
-  constructor(private router: Router, private alertController: AlertController, private db: DbService, private nativestorage: NativeStorage, private auth: AuthService) { }
+  constructor(private router: Router, private alertController: AlertController, private db: DbService, private nativestorage: NativeStorage, private auth: AuthService, private carritoService: CarritoService) { }
 
   async ngOnInit() {
     // Verificar si hay sesión activa al cargar la página
@@ -30,21 +31,19 @@ export class LoginPage implements OnInit {
   async onLogin() {
     try {
       const usuario = await this.db.validarUsuario(this.loginUser, this.passwordUser);
-
       if (usuario) {
-        // Guardar datos de sesión
-        await Promise.all([
-          this.nativestorage.setItem('userId', usuario.id_usuario.toString()),
-          this.nativestorage.setItem('rolId', usuario.rol.toString()),
-        ]);
-
-        // Redirigir según el rol
+        const userId = usuario.id_usuario.toString();
+        await this.nativestorage.setItem('userId', userId);
+        await this.nativestorage.setItem('rolId', usuario.rol.toString());
+        
+        // Cargar el carrito del usuario
+        await this.carritoService.cargarCarritoUsuario(userId);
+        
         if (usuario.rol === 1) {
           await this.router.navigate(['/adminprincipal']);
         } else {
           await this.router.navigate(['/home']);
         }
-
         this.limpiarCampos();
       } else {
         await this.mostrarAlerta('Login Fallido', 'Correo o contraseña incorrectos.');

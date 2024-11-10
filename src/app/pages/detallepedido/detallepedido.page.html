@@ -10,24 +10,9 @@
 </ion-header>
 
 <ion-content>
-
-  <!-- <ion-card >
-    
-    <ion-card-header>
-      <ion-label color="light">Pedido : {{pedidoRecibido.id_pedido}}</ion-label>
-      <ion-label color="light">Fecha Pedido: {{pedidoRecibido.fecha_pedido}}</ion-label>
-      <ion-label color="light">Cliente: {{pedidoRecibido.usuario}}</ion-label>
-      <ion-label color="light">Total: {{pedidoRecibido.total}}</ion-label>
-      <ion-label color="light">Estado: {{pedidoRecibido.estado}}</ion-label>
-    </ion-card-header>
-
-    <ion-button slot="end" color="tertiary">Ver detalle</ion-button>
-
-  </ion-card> -->
-
   <ion-card >
     <ion-card-header>
-      <ion-card-title color="dark">informacion Pedido</ion-card-title>
+      <ion-card-title color="dark">Informacion Pedido</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -43,14 +28,14 @@
             </ion-item>
 
             <ion-item>
-              <ion-label position="stacked">Cliente: {{pedidoRecibido.usuario}}</ion-label>
+              <ion-label position="stacked">Cliente: {{pedidoRecibido.nombre_usuario}}</ion-label>
             </ion-item>
 
             <ion-item>
               <ion-label position="stacked">Total: {{pedidoRecibido.total}}</ion-label>
             </ion-item>
             <ion-item>
-              <ion-label position="stacked">Estado: {{pedidoRecibido.estado}}</ion-label>
+              <ion-label position="stacked">Estado: {{pedidoRecibido.nombre_estado}}</ion-label>
             </ion-item>
           </ion-col>
         </ion-row>

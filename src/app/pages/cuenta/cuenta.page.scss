@@ -12,7 +12,31 @@
 }
 
 .imgRedonda {
-    width:300px;
-    height:300px;
-    border-radius:50%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
 }
+
+a{
+
+    margin-top: 2rem;
+    color: #9e4097;
+
+}
+
+.loading-message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa toda la altura de la pantalla */
+    text-align: center;
+    color: var(--ion-color-dark);
+    font-size: 18px;
+}
+
+.loading-message p {
+    margin-top: 10px;
+}
+

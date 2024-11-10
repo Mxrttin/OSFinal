@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { CarritoService } from './carrito.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private nativeStorage: NativeStorage, private router: Router) { }
+  constructor(private nativeStorage: NativeStorage, private router: Router, private carritoService: CarritoService) { }
 
 
   async verificarSesion() {

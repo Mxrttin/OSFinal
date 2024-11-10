@@ -75,6 +75,14 @@ const routes: Routes = [
     path: 'detallepedido',
     loadChildren: () => import('./pages/detallepedido/detallepedido.module').then( m => m.DetallepedidoPageModule)
   },
+  {
+    path: 'cambiarpassword',
+    loadChildren: () => import('./pages/cambiarpassword/cambiarpassword.module').then( m => m.CambiarpasswordPageModule)
+  },
+  {
+    path: 'pedidosusuarios',
+    loadChildren: () => import('./pages/pedidosusuarios/pedidosusuarios.module').then( m => m.PedidosusuariosPageModule)
+  },
 ];
 
 @NgModule({

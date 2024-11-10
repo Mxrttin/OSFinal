@@ -356,6 +356,12 @@ export class DbService {
     })
   }
 
+  modificarPassword(id:number,clave:string){
+    return this.database.executeSql('UPDATE usuario SET clave = ? WHERE id_usuario = ?',[clave,id]).then(res=>{
+      this.consultarUsuario()
+    })
+  }
+
   consultarRegion(){
     return this.database.executeSql('SELECT * FROM region',[]).then(res=>{
       let regiones: Region[] = [];
@@ -474,6 +480,29 @@ export class DbService {
       });
   }
 
+  // obtenerPedidoPorId(id: number): Promise<Pedido | null>{
+  //   return this.database.executeSql('SELECT * FROM pedido WHERE usuario = ?',[id]).then(res=>{
+  //     if (res.rows.length > 0) {
+  //       const pedido: Pedido = {
+  //         id_pedido: res.rows.item(0).id_pedido,
+  //         fecha_pedido: res.rows.item(0).fecha_pedido,
+  //         usuario: res.rows.item(0).usuario,
+  //         total: res.rows.item(0).total,
+  //         estado: res.rows.item(0).estado,
+  //         nombre_usuario: res.rows.item(0).nombre_usuario,
+  //         nombre_estado: res.rows.item(0).nombre_estado,
+
+  //       };
+  //       return pedido;
+  //     }
+  //     return null
+  //   })
+  //   .catch(e => {
+  //     console.error('Error al obtener usuario por ID:', e);
+  //     return null; 
+  //   });
+  // }  
+
   actualizarStock(id: number, stock: number){
     return this.database.executeSql('UPDATE producto set stock = ? WHERE id_producto = ?',[stock,id]).then(res=>{
       this.consultarProducto()
@@ -482,7 +511,7 @@ export class DbService {
   }
 
   consultarPedido(){
-    return this.database.executeSql('SELECT * FROM pedido',[]).then(res=>{
+    return this.database.executeSql('SELECT p.*, u.nombre as nombre_usuario, e.nombre AS nombre_estado FROM pedido p JOIN usuario u on p.usuario = u.id_usuario JOIN estado e ON p.estado = e.id_estado',[]).then(res=>{
 
       let pedidos: Pedido[] = [];
 
@@ -494,7 +523,9 @@ export class DbService {
             fecha_pedido: res.rows.item(i).fecha_pedido,
             usuario: res.rows.item(i).usuario,
             total: res.rows.item(i).total,
-            estado: res.rows.item(i).estado
+            estado: res.rows.item(i).estado,
+            nombre_usuario: res.rows.item(i).nombre_usuario,
+            nombre_estado: res.rows.item(i).nombre_estado,
           })
         }
       }
@@ -541,6 +572,42 @@ export class DbService {
         detalles.push(res.rows.item(i));
       }
       return detalles;
+    });
+  }
+
+  verificarCorreo(correo: string, id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE correo = ? AND id_usuario <> ?',
+      [correo, id_usuario]
+    ).then(result => {
+      return result.rows.length > 0; // Retorna true si el correo ya existe
+    });
+  }
+  
+  verificarTelefono(telefono: number, id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE telefono = ? AND id_usuario <> ?',
+      [telefono, id_usuario]
+    ).then(result => {
+      return result.rows.length > 0; // Retorna true si el teléfono ya existe
+    });
+  }
+
+  verificarRut(rut: string, id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE rut = ? AND id_usuario <> ?',
+      [rut, id_usuario]
+    ).then(result => {
+      return result.rows.length > 0; // Retorna true si el teléfono ya existe
+    });
+  }
+
+  verificarPassword(clave: string, id_usuario: number): Promise<boolean> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE clave = ? AND id_usuario = ?',
+      [clave, id_usuario]
+    ).then(result => {
+      return result.rows.length > 0; // Retorna true si el teléfono ya existe
     });
   }
 

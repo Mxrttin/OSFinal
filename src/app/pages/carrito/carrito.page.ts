@@ -14,17 +14,40 @@ export class CarritoPage implements OnInit {
   carrito: any[] = [];
   total: number = 0;
   arregloUsuario: any;
+  userId: string = '';
+
   
   constructor(private carritoService: CarritoService, private db: DbService, private router: Router, private nativeStorage: NativeStorage) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.carritoService.carrito$.subscribe(items => {
       this.carrito = items;
       this.total = this.carritoService.obtenerTotal();
     });
 
     this.guardarUsuarioEnArreglo();
+
+    try {
+      // Primero obtenemos el ID del usuario
+      this.userId = await this.nativeStorage.getItem('userId');
+      console.log('ID de usuario actual:', this.userId);
+
+      // Cargamos el carrito específico del usuario
+      await this.carritoService.cargarCarritoUsuario(this.userId);
+      
+      // Nos suscribimos a los cambios del carrito
+      this.carritoService.carrito$.subscribe(items => {
+        console.log('Productos en carrito:', items);
+        this.carrito = items;
+        this.total = this.carritoService.obtenerTotal();
+      });
+
+      await this.guardarUsuarioEnArreglo();
+    } catch (error) {
+      console.error('Error al inicializar el carrito:', error);
+    }
   }
+
 
   async guardarUsuarioEnArreglo() {
     try {

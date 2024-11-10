@@ -11,53 +11,68 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class CuentaPage implements OnInit {
   arregloUsuario: any;
+  cargando: boolean = true;
 
-  constructor(private auth: AuthService, private db:DbService, private router: Router, private nativeStorage: NativeStorage) { }
+  constructor(
+    private auth: AuthService,
+    private db: DbService,
+    private router: Router,
+    private nativeStorage: NativeStorage
+  ) {}
 
-  ngOnInit() {
-    this.guardarUsuarioEnArreglo();
+  ngOnInit() {}
+
+  ionViewWillEnter() {
+    this.cargarDatosUsuario();
   }
 
-  async guardarUsuarioEnArreglo() {
+  async cargarDatosUsuario() {
+    this.cargando = true;
+    this.arregloUsuario = [];  // Reinicia el arreglo para evitar mostrar datos antiguos
     try {
-      // Obtiene el ID del usuario almacenado en NativeStorage
       const userId = await this.nativeStorage.getItem('userId');
-      
       if (userId) {
-        // Busca en la base de datos el usuario con ese ID
-        this.db.obtenerUsuarioPorId(userId).then(usuario => {
-          if (usuario) {
-            this.arregloUsuario = [usuario];
-          } else {
-            console.warn('Usuario no encontrado en la base de datos.');
-          }
-        }).catch(error => {
-          console.error('Error al buscar el usuario:', error);
-        });
+        const usuario = await this.db.obtenerUsuarioPorId(userId);
+        if (usuario) {
+          this.arregloUsuario = [usuario];
+        } else {
+          console.warn('Usuario no encontrado en la base de datos.');
+        }
       } else {
         console.warn('No hay ID de usuario almacenado en NativeStorage.');
       }
     } catch (error) {
       console.error('Error al obtener el ID de usuario de NativeStorage:', error);
+    } finally {
+      this.cargando = false;
     }
   }
 
-  agregarDireccion(usuario: any){
-    let navigationExtras : NavigationExtras = {
-      state:{
-        usuarioEnviado:usuario
-      }
-    }
-    this.router.navigate(['/agregardireccion'],navigationExtras)
+  agregarDireccion(usuario: any) {
+    let navigationExtras: NavigationExtras = {
+      state: { usuarioEnviado: usuario },
+    };
+    this.router.navigate(['/agregardireccion'], navigationExtras);
   }
 
-  modificarDatos(usuario: any){
-    let navigationExtras : NavigationExtras = {
-      state:{
-        usuarioEnviado:usuario
-      }
-    }
-    this.router.navigate(['/modificarperfil'],navigationExtras)
+  modificarDatos(usuario: any) {
+    let navigationExtras: NavigationExtras = {
+      state: { usuarioEnviado: usuario },
+    };
+    this.router.navigate(['/modificarperfil'], navigationExtras);
   }
 
+  modificarPassword(usuario: any) {
+    let navigationExtras: NavigationExtras = {
+      state: { usuarioEnviado: usuario },
+    };
+    this.router.navigate(['/cambiarpassword'], navigationExtras);
+  }
+
+  irPedidos(usuario: any){
+    let navigationExtras: NavigationExtras = {
+      state: { usuarioEnviado: usuario },
+    };
+    this.router.navigate(['/pedidosusuarios'], navigationExtras);
+  }
 }
