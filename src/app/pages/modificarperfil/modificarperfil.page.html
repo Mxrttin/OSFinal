@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-title class="ion-text-center" color="dark">
+      Modificar Datos
+    </ion-card-title>
+
+    <img alt="Silhouette of mountains" src="{{usuarioRecibido.foto}}" />
+
+    <ion-item>
+      <ion-input label="Nombre" labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Apellido " labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.apellido"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Rut " labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.rut"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Correo electronico" labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.correo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Telefono" labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.telefono"></ion-input>
+    </ion-item>
+
+    <ion-fab horizontal="end" vertical="top" class="editar">
+      <ion-fab-button color="tertiary" class="small-fab" (click)="takePicture()">
+        <ion-icon name="camera-outline" class="icon-top-right"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <div class="boton">
+      <ion-button expand="block" color="tertiary" (click)="guardar()"> Guardar</ion-button>
+  </div>
+  </ion-card>
+</ion-content>

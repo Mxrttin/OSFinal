@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>OcultoPedidos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let pedido of arregloPedido">
+    <ion-item >
+      <ion-label>Pedido: {{pedido.id_pedido}}</ion-label>
+      <ion-button slot="end" color="tertiary" (click)="visualizarPedido(pedido)">Ver detalle</ion-button>
+    </ion-item>
+
+  </ion-list>
+
+
+</ion-content>

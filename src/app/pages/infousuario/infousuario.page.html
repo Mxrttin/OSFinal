@@ -1,0 +1,93 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>InfoUsuario</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button>
+
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title color="dark">Información del Usuario</ion-card-title>
+        <img src="{{usuarioRecibido.foto}}" alt="">
+      </ion-card-header>
+  
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+  
+              <ion-item>
+                <ion-label position="stacked">Nombre</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.nombre" ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Apellido</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.apellido" ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Rut</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.rut" ></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                <ion-label position="stacked">Correo Electrónico</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.correo" ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="stacked">Telefono</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.telefono" ></ion-input>
+              </ion-item>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  
+    <ion-card >
+      <ion-card-header>
+        <ion-card-title color="dark">Dirección de Envío</ion-card-title>
+      </ion-card-header>
+  
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label position="stacked">Comuna</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.comuna" ></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                <ion-label position="stacked">Región</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.region" ></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                <ion-label position="stacked">Nombre del Cliente</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.nombre"></ion-input>
+              </ion-item>
+  
+              <ion-item>
+                <ion-label position="stacked">Dirección de su Domicilio</ion-label>
+                <ion-input [(ngModel)]="usuarioRecibido.direccion"></ion-input>
+              </ion-item>
+
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  
+  </ion-content>
+
+</ion-content>

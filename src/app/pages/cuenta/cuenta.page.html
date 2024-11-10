@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Cuenta</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button>
+      <ion-icon id="ef" name="bag-handle" slot="icon-only"></ion-icon>
+    </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let usuario of arregloUsuario">
+    <ion-card-header>
+      <ion-card-title color="dark">Información del Usuario</ion-card-title>
+      <hr>
+      <div class="imagen">
+        <img src="{{usuario.foto}}" alt="" class="imgRedonda">
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+
+            <ion-item>
+              <ion-label position="stacked">Nombre del Usuario</ion-label>
+              <ion-input [(ngModel)]="usuario.nombre" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Apellido del Usuario</ion-label>
+              <ion-input [(ngModel)]="usuario.apellido" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Rut del Usuario</ion-label>
+              <ion-input [(ngModel)]="usuario.rut" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Correo Electrónico</ion-label>
+              <ion-input [(ngModel)]="usuario.correo" readonly></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Telefono</ion-label>
+              <ion-input [(ngModel)]="usuario.telefono" ></ion-input>
+            </ion-item>
+
+            <div class="botones">
+              <ion-button  color="tertiary" (click)="modificarDatos(usuario)">Modificar Datos</ion-button>
+            </div>
+
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card  *ngFor="let usuario of arregloUsuario">
+    <ion-card-header>
+      <ion-card-title color="dark">Dirección de Envío</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label position="stacked">Comuna</ion-label>
+              <ion-input [(ngModel)]="usuario.comuna" ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Región</ion-label>
+              <ion-input [(ngModel)]="usuario.region"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Nombre del Cliente</ion-label>
+              <ion-input [(ngModel)]="usuario.nombre"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Dirección de su Domicilio</ion-label>
+              <ion-input [(ngModel)]="usuario.direccion" ></ion-input>
+            </ion-item>
+            <div class="botones">
+              <ion-button  color="tertiary" (click)="agregarDireccion(usuario)">Agregar o Modificar Direccion</ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

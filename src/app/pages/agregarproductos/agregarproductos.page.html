@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>agregarproducto</ion-title> -->
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+
+    <ion-card-title class="ion-text-center" color="dark">
+      Ingrese datos del prodcuto
+    </ion-card-title>
+    <hr>
+    <br>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-input label="Nombre" labelPlacement="floating" placeholder="" [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Descripcion" labelPlacement="floating" placeholder="" [(ngModel)]="descripcion"></ion-input>
+      </ion-item>
+
+      <ion-item >
+        <ion-select   label="Categoria" placeholder="Seleccione una Categoria" [(ngModel)]="categorias" >
+          <ion-select-option value="{{categoria.nombre}}" color="light" *ngFor="let categoria of arregloCategorias">{{categoria.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-button (click)="takePicture()" slot="end" color="tertiary" >Tomar foto</ion-button>
+        <img *ngIf="imagen" [src]="imagen" alt="Sin imagen" style="height: 250px; width: 250px;"/>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Precio" labelPlacement="floating" placeholder="" type="number" [(ngModel)]="precio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Stock" labelPlacement="floating" placeholder="" type="number" [(ngModel)]="stock"></ion-input>
+      </ion-item>
+      <br>
+      <div class="boton">
+          <ion-button expand="block" color="tertiary" (click)="guardar()"> Guardar</ion-button>
+      </div>
+
+
+    </ion-card-content>
+
+  </ion-card>
+
+  
+
+</ion-content>

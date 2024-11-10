@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">OcultoProductos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let item of arregloProductos">
+    <img alt="Silhouette of mountains" src="{{item.foto}}" />
+    <ion-card-header>
+      <ion-card-title color="dark" class="ion-text-center">{{item.nombre}}</ion-card-title>
+      <ion-card-subtitle color="dark" class="ion-text-center">
+        {{item.descripcion}}
+        <hr>
+        Precio: {{item.precio}}
+        <hr>
+        Stock: {{item.stock}}
+        <hr>
+        Estado: {{item.activo}}
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-fab horizontal="end" vertical="top" class="editar">
+      <ion-fab-button color="tertiary" class="small-fab" (click)="modificar(item)">
+        <ion-icon name="pencil-outline" class="icon-top-right"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ion-card>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button [routerLink]="'/agregarproductos'" color="tertiary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

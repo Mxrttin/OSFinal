@@ -1,20 +1,46 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">
+      OcultoStudio
     </ion-title>
+    <ion-buttons slot="end" [routerLink]="'/carrito'">
+      <ion-button
+      fill="clear"
+      size="large"
+      color="dark" > <!--bag para verificar el carrito-->
+      <ion-icon name="bag-handle" slot="icon-only"></ion-icon>
+    </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  
+
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-row >
+    
+    <ion-col sizeLg="8" sizeMd="4" sizeSm="6" sizeXl="3" sizeXs="6" *ngFor="let item of arregloProductos"> 
+      <ion-card *ngIf="item.activo == 'Activo'" (click)="visualizar(item)">
+        <ion-thumbnail>
+          <ion-img [src]='item.foto'></ion-img>
+        </ion-thumbnail>
+
+        <ion-label>
+          <ion-text color="dark"><strong>{{item.nombre}}</strong></ion-text>
+          <p>
+            <ion-text color="dark">
+              $<strong>{{item.precio}}</strong>
+            </ion-text>
+          </p>
+        </ion-label>
+      </ion-card>
+    </ion-col>
+    
+
+  </ion-row>
+
 </ion-content>

@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title >OcultoUsuarios</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+
+
+  <ion-list >
+    <ion-item-sliding *ngFor="let usuario of arregloUsuario">
+      <ion-item>
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" src="{{usuario.foto}}" />
+        </ion-avatar>
+        <ion-label>
+          {{usuario.nombre}}
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="tertiary" (click)="visualizarUsuario(usuario)">
+          <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="eliminar(usuario)"  *ngIf="usuario.rol == 2">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

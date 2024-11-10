@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">EditarProductos</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <img alt="Silhouette of mountains" src="{{productoRecibido.foto}}" />
+    <ion-card-header>
+      <ion-item>
+        <ion-label position="stacked">Producto</ion-label>
+        <ion-input [(ngModel)]="productoRecibido.nombre"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Descripcion</ion-label>
+        <ion-input [(ngModel)]="productoRecibido.descripcion"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Precio</ion-label>
+        <ion-input [(ngModel)]="productoRecibido.precio"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Stock</ion-label>
+        <ion-input [(ngModel)]="productoRecibido.stock"></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-select label="Estado" placeholder="Modificar Estado" [(ngModel)]="productoRecibido.activo" >
+            <ion-select-option value="Activo" color="light">Activo</ion-select-option>
+            <ion-select-option value="Inactivo" color="light">Inactivo</ion-select-option>
+          </ion-select>
+      </ion-item>
+    </ion-card-header>
+
+    <ion-fab horizontal="end" vertical="top" class="editar">
+      <ion-fab-button color="tertiary" class="small-fab" (click)="takePicture()">
+        <ion-icon name="camera-outline" class="icon-top-right"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  
+    <ion-card-content>
+      <div class="boton">
+        <ion-button color="tertiary" (click)="modificar()">Guardar Cambios</ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

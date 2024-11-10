@@ -1,0 +1,21 @@
+.informacion{
+
+    display: flex;
+    flex-direction: column;
+}
+
+a{
+
+    text-decoration-line: line-through;
+    color: rgb(0, 0, 0);
+    text-decoration-color: #9e4097;
+
+    margin-top: 8rem;
+    font-size: medium;
+
+}
+
+#ef{
+
+    visibility: hidden;
+}

@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>OcultoStudio</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-icon name=""></ion-icon>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+
+      <h3 class="ion-text-center">Inicio de sesion</h3>
+
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-input label="Correo electronico" labelPlacement="floating" placeholder="Ingrese su Correo electronico"
+          [(ngModel)]="loginUser"></ion-input>
+      </ion-item>
+      <br>
+      <ion-item>
+        <ion-input label="Contraseña" labelPlacement="floating" type="password" placeholder="Ingrese su contraseña"
+          [(ngModel)]="passwordUser"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <a href="" class="ion-text-center" [routerLink]="['/recuperarpassword']">¿Has olvidado tu contraseña?</a> 
+      </ion-item>
+
+      <br>
+      <div class="boton">
+        <ion-button expand="block" color="tertiary" (click)="onLogin()">Iniciar sesion</ion-button>
+        <a href="" class="ion-text-center" [routerLink]="['/registro']">Crear cuenta</a>
+      </div>
+
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>

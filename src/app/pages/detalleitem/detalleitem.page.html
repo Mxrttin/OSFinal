@@ -1,0 +1,59 @@
+<ion-content [fullscreen]="true">
+  <ion-toolbar>
+    <ion-title class="ion-text-center" color="dark">Detalle</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="dark"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end" [routerLink]="'/carrito'">
+      <ion-button fill="clear" size="large" color="dark">
+        <ion-icon name="bag-handle" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle color="dark"  class="small-title" >{{productoRecibido.nombre | uppercase}}</ion-card-subtitle>
+      <ion-card-title color="dark">{{productoRecibido.description}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div [style.backgroundImage]="'url(' + productoRecibido.foto + ')'" class="bg"></div>
+
+      <ion-label>
+        <h5>{{productoRecibido.name | uppercase }}</h5>
+        <p class="desc">{{productoRecibido.description}}</p>
+        <p>
+          <ion-text color="dark" class="price">$<span>{{productoRecibido.precio}}</span></ion-text>
+        </p>
+      </ion-label>
+
+      <ion-item>
+        <ion-select label="Talla" placeholder="Seleccione una talla" [(ngModel)]="tallaSeleccionada">
+          <ion-select-option color="light" value="{{talla.nombre}}" *ngFor="let talla of arregloTalla">{{talla.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <b>Stock Disponible: {{productoRecibido.stock}}</b>
+      </ion-item>
+
+      <br>
+
+      <ion-item>
+        <ion-button (click)="restarCantidad()" color="tertiary">-</ion-button>
+        <ion-input [(ngModel)]="cantidad" readonly class="ion-text-center"></ion-input>
+        <ion-button (click)="sumarCantidad()" color="tertiary">+</ion-button>
+      </ion-item>
+    </ion-card-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-button size="large" expand="block" color="tertiary" [strong]="true" (click)="agregarAlCarrito(productoRecibido)">
+          <ion-icon slot="start" name="bag-handle-outline"></ion-icon>
+          <ion-text>Agregar al carro</ion-text>
+        </ion-button>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-card>
+</ion-content>

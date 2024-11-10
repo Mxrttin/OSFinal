@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+
+    <ion-card-title class="ion-text-center" color="light">
+      Ingrese datos de su direccion
+    </ion-card-title>
+    <hr>
+    <br>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-select label="Region" placeholder="Seleccione una Region" [(ngModel)]="usuarioRecibido.region" >
+          <ion-select-option color="light" *ngFor="let region of arregloRegion">{{region.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-select label="Comuna" placeholder="Seleccione una Comuna" [(ngModel)]="usuarioRecibido.comuna" >
+          <ion-select-option color="light" *ngFor="let comuna of arregloComuna">{{comuna.nombre}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-input label="Direccion de su domicilio" labelPlacement="floating" placeholder=""  [(ngModel)]="usuarioRecibido.direccion"></ion-input>
+      </ion-item>
+      <br>
+      <div class="boton">
+          <ion-button expand="block" color="tertiary" (click)="guardar()"> Guardar</ion-button>
+      </div>
+
+
+    </ion-card-content>
+
+  </ion-card>
+
+  
+
+</ion-content>
