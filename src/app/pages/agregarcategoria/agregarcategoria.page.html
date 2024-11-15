@@ -1,0 +1,41 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <!-- <ion-title>agregarproducto</ion-title> -->
+
+
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+
+    <ion-card-title class="ion-text-center" color="dark">
+      Ingrese nueva categoria
+    </ion-card-title>
+    <hr>
+    <br>
+    <ion-card-content>
+
+      <ion-item>
+        <ion-input label="Categoria" labelPlacement="floating" placeholder="" [(ngModel)]="categoria"></ion-input>
+      </ion-item>
+
+      <br>
+      <div class="boton">
+          <ion-button expand="block" color="tertiary" (click)="guardar()"> Guardar</ion-button>
+      </div>
+
+      
+
+    </ion-card-content>
+
+  </ion-card>
+
+  
+
+</ion-content>

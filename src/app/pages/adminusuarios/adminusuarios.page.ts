@@ -34,7 +34,7 @@ export class AdminusuariosPage implements OnInit {
   }
 
   eliminar(usuario:any){
-    this.db.eliminarUsuario(usuario.id_user)
+    this.db.eliminarUsuario(usuario.id_usuario)
     this.router.navigate(['/adminusuarios'])
   }
 

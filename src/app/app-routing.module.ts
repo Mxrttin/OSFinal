@@ -83,6 +83,18 @@ const routes: Routes = [
     path: 'pedidosusuarios',
     loadChildren: () => import('./pages/pedidosusuarios/pedidosusuarios.module').then( m => m.PedidosusuariosPageModule)
   },
+  {
+    path: 'recuperar',
+    loadChildren: () => import('./pages/recuperar/recuperar.module').then( m => m.RecuperarPageModule)
+  },
+  {
+    path: 'admincategorias',
+    loadChildren: () => import('./pages/admincategorias/admincategorias.module').then( m => m.AdmincategoriasPageModule)
+  },
+  {
+    path: 'agregarcategoria',
+    loadChildren: () => import('./pages/agregarcategoria/agregarcategoria.module').then( m => m.AgregarcategoriaPageModule)
+  },
 ];
 
 @NgModule({

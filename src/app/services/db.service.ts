@@ -38,7 +38,7 @@ export class DbService {
 
   tablaPedido: string = "CREATE TABLE IF NOT EXISTS pedido(id_pedido INTEGER PRIMARY KEY autoincrement, fecha_pedido TEXT NOT NULL, usuario INTEGER NOT NULL, total INTEGER NOT NULL, estado INTEGER NOT NULL, FOREIGN KEY(usuario) REFERENCES usuario(id_user),FOREIGN KEY(estado) REFERENCES estado(id_estado));";
 
-  tablaDetalle: string = "CREATE TABLE IF NOT EXISTS detalle(id_detalle INTEGER PRIMARY KEY autoincrement, pedido INTEGER NOT NULL, producto INTEGER NOT NULL, cantidad INTEGER NOT NULL, subtotal INTEGER NOT NULL, FOREIGN KEY(pedido) REFERENCES pedido(id_pedido), FOREIGN KEY(producto) REFERENCES producto(id_producto));";
+  tablaDetalle: string = "CREATE TABLE IF NOT EXISTS detalles(id_detalle INTEGER PRIMARY KEY autoincrement, pedido INTEGER NOT NULL, producto INTEGER NOT NULL, cantidad INTEGER NOT NULL, subtotal INTEGER NOT NULL, talla VARCHAR(10) NOT NULL, FOREIGN KEY(pedido) REFERENCES pedido(id_pedido), FOREIGN KEY(producto) REFERENCES producto(id_producto));";
 
 
   // insertar datos en las tablas
@@ -356,10 +356,38 @@ export class DbService {
     })
   }
 
-  modificarPassword(id:number,clave:string){
-    return this.database.executeSql('UPDATE usuario SET clave = ? WHERE id_usuario = ?',[clave,id]).then(res=>{
-      this.consultarUsuario()
-    })
+  actualizarPassword(correo: string, nuevaClave: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.database.executeSql(
+        'UPDATE usuario SET clave = ? WHERE correo = ?',
+        [nuevaClave, correo]
+      ).then((result) => {
+        if (result.rowsAffected > 0) {
+          console.log('Contraseña actualizada exitosamente');
+          this.consultarUsuario();
+          resolve();
+        } else {
+          console.error('No se encontró el usuario para actualizar');
+          reject(new Error('No se encontró el usuario'));
+        }
+      }).catch(error => {
+        console.error('Error al actualizar contraseña:', error);
+        reject(error);
+      });
+    });
+  }
+
+  async verificarActualizacionPassword(correo: string, nuevaClave: string): Promise<boolean> {
+    try {
+      const result = await this.database.executeSql(
+        'SELECT * FROM usuario WHERE correo = ? AND clave = ?',
+        [correo, nuevaClave]
+      );
+      return result.rows.length > 0;
+    } catch (error) {
+      console.error('Error al verificar actualización:', error);
+      return false;
+    }
   }
 
   consultarRegion(){
@@ -432,7 +460,7 @@ export class DbService {
   }
 
   insertarUsuario(nombre: string, apellido: string, rut: string, correo: string, telefono: number, clave: string) {
-    return this.database.executeSql("INSERT INTO usuario (nombre, apellido, rut, correo, telefono, clave, rol, foto, region, comuna, direccion) VALUES (?,?,?,?,?,?,2,'https://ionicframework.com/docs/img/demos/avatar.svg','','','')", 
+    return this.database.executeSql("INSERT INTO usuario (nombre, apellido, rut, correo, telefono, clave, rol, foto, region, comuna, direccion) VALUES (?,?,?,?,?,?,2,'assets/image/usuario.jpg','','','')", 
     [nombre, apellido, rut, correo, telefono, clave])
     .then(res => {
       this.presentAlert("Insertar", "Usuario Insertado");
@@ -548,10 +576,10 @@ export class DbService {
     });
   }
 
-  insertarDetalle(pedido: number, producto: number, cantidad: number, subtotal: number): Promise<void> {
+  insertarDetalle(pedido: number, producto: number, cantidad: number, subtotal: number,talla: string): Promise<void> {
     return this.database.executeSql(
-      "INSERT INTO detalle(pedido,producto,cantidad,subtotal) VALUES (?,?,?,?)",
-      [pedido, producto, cantidad, subtotal]
+      "INSERT INTO detalles(pedido,producto,cantidad,subtotal,talla) VALUES (?,?,?,?,?)",
+      [pedido, producto, cantidad, subtotal,talla]
     ).then(() => {
       // this.presentAlert("Detalle", "Detalle realizado con éxito");
     }).catch(e => {
@@ -563,7 +591,7 @@ export class DbService {
   obtenerDetallePedido(idPedido: number): Promise<any[]> {
     return this.database.executeSql(`
       SELECT d.*, p.nombre as nombre_producto,p.foto as foto_producto 
-      FROM detalle d
+      FROM detalles d
       JOIN producto p ON d.producto = p.id_producto
       WHERE d.pedido = ?
     `, [idPedido]).then(res => {
@@ -608,6 +636,100 @@ export class DbService {
       [clave, id_usuario]
     ).then(result => {
       return result.rows.length > 0; // Retorna true si el teléfono ya existe
+    });
+  }
+
+  obtenerUsuarioPorCorreo(correo: string): Promise<any> {
+    return this.database.executeSql(
+      'SELECT * FROM usuario WHERE correo = ?',
+      [correo]
+    ).then(res => {
+      if (res.rows.length > 0) {
+        return {
+          id_usuario: res.rows.item(0).id_usuario,
+          nombre: res.rows.item(0).nombre,
+          apellido: res.rows.item(0).apellido,
+          rut: res.rows.item(0).rut,
+          correo: res.rows.item(0).correo,
+          telefono: res.rows.item(0).telefono,
+          clave: res.rows.item(0).clave,
+          foto: res.rows.item(0).foto,
+          rol: res.rows.item(0).rol,
+          region: res.rows.item(0).region,
+          comuna: res.rows.item(0).comuna,
+          direccion: res.rows.item(0).direccion
+        };
+      }
+      return null;
+    });
+  }
+
+  modificarPassword(id_usuario: number, nuevaClave: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.database.executeSql(
+        'UPDATE usuario SET clave = ? WHERE id_usuario = ?',
+        [nuevaClave, id_usuario]
+      ).then((result) => {
+        if (result.rowsAffected > 0) {
+          console.log('Contraseña modificada exitosamente');
+          this.consultarUsuario();
+          resolve();
+        } else {
+          console.error('No se encontró el usuario para actualizar');
+          reject(new Error('No se encontró el usuario'));
+        }
+      }).catch(error => {
+        console.error('Error al modificar contraseña:', error);
+        reject(error);
+      });
+    });
+  }
+
+  // Método para verificar las credenciales de inicio de sesión
+  async verificarCredenciales(correo: string, clave: string): Promise<any> {
+    try {
+      const result = await this.database.executeSql(
+        'SELECT * FROM usuario WHERE correo = ? AND clave = ?',
+        [correo, clave]
+      );
+
+      if (result.rows.length > 0) {
+        // Si encuentra un usuario, retorna sus datos
+        return {
+          id_usuario: result.rows.item(0).id_usuario,
+          nombre: result.rows.item(0).nombre,
+          apellido: result.rows.item(0).apellido,
+          rut: result.rows.item(0).rut,
+          correo: result.rows.item(0).correo,
+          telefono: result.rows.item(0).telefono,
+          clave: result.rows.item(0).clave,
+          foto: result.rows.item(0).foto,
+          rol: result.rows.item(0).rol,
+          region: result.rows.item(0).region,
+          comuna: result.rows.item(0).comuna,
+          direccion: result.rows.item(0).direccion
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error al verificar credenciales:', error);
+      throw error;
+    }
+  }
+
+  modificarPasswordC(id:number,clave:string){
+    return this.database.executeSql('UPDATE usuario SET clave = ? WHERE id_usuario = ?',[clave,id]).then(res=>{
+      this.consultarUsuario()
+    })
+  }
+
+  insertarCategoria(nombre: string){
+    return this.database.executeSql('INSERT INTO categoria (nombre) VALUES (?)',[nombre]).then(() => {
+      // this.presentAlert("Detalle", "Detalle realizado con éxito");
+      this.consultarCategoria()
+    }).catch(e => {
+      // this.presentAlert("Detalle", "Error: " + JSON.stringify(e));
+      throw e;
     });
   }
 

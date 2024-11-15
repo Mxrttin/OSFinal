@@ -10,19 +10,27 @@ export class CarritoService {
   carrito$ = this.carrito.asObservable();
   private currentUserId: string | null = null;
 
-  constructor(private nativeStorage: NativeStorage) {}
+  constructor(private nativeStorage: NativeStorage) {
+    this.nativeStorage.getItem('userId')
+      .then(userId => {
+        if (userId) {
+          this.cargarCarritoUsuario(userId);
+        }
+      })
+      .catch(error => console.error('Error al cargar userId inicial:', error));
+  }
 
   async cargarCarritoUsuario(userId: string) {
     try {
       this.currentUserId = userId;
       const carritoKey = `carrito_${userId}`;
       const carritoGuardado = await this.nativeStorage.getItem(carritoKey);
-      console.log('Carrito cargado:', carritoGuardado);
       
       if (carritoGuardado) {
         this.carrito.next(carritoGuardado);
       } else {
         this.carrito.next([]);
+        await this.guardarCarrito([]);
       }
     } catch (error) {
       console.error('Error al cargar el carrito:', error);
@@ -53,8 +61,15 @@ export class CarritoService {
     );
 
     if (index > -1) {
-      productos[index].cantidad += producto.cantidad;
+      const nuevaCantidad = productos[index].cantidad + producto.cantidad;
+      if (nuevaCantidad > 5) {
+        throw new Error('No se pueden agregar más de 5 unidades de este producto');
+      }
+      productos[index].cantidad = nuevaCantidad;
     } else {
+      if (producto.cantidad > 5) {
+        throw new Error('No se pueden agregar más de 5 unidades de este producto');
+      }
       productos.push({ ...producto });
     }
     
@@ -64,6 +79,10 @@ export class CarritoService {
   }
 
   async actualizarCantidad(id_producto: string, talla: string, nuevaCantidad: number) {
+    if (nuevaCantidad > 5) {
+      throw new Error('No se pueden agregar más de 5 unidades de este producto');
+    }
+
     const productos = this.carrito.getValue();
     const index = productos.findIndex(
       (p) => p.id_producto === id_producto && p.talla === talla
@@ -113,5 +132,25 @@ export class CarritoService {
   async limpiarCarritoLocal() {
     this.currentUserId = null;
     this.carrito.next([]);
+  }
+
+  // Método para manejar el inicio de sesión
+  async iniciarSesionUsuario(userId: string) {
+    await this.cargarCarritoUsuario(userId);
+  }
+
+  // Método para manejar el cierre de sesión
+  async cerrarSesionUsuario() {
+    this.currentUserId = null;
+    this.carrito.next([]);
+  }
+
+  // Nuevo método para obtener la cantidad de un producto específico en el carrito
+  obtenerCantidadProducto(id_producto: string, talla: string): number {
+    const productos = this.carrito.getValue();
+    const producto = productos.find(
+      p => p.id_producto === id_producto && p.talla === talla
+    );
+    return producto ? producto.cantidad : 0;
   }
 }

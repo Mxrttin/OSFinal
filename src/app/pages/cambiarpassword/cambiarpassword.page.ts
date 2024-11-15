@@ -9,12 +9,17 @@ import { DbService } from 'src/app/services/db.service';
   styleUrls: ['./cambiarpassword.page.scss'],
 })
 export class CambiarpasswordPage implements OnInit {
+  password_actual: string = "";
+  password_nueva: string = "";
+  confirmar_password: string = "";
   usuarioRecibido: any;
-  password_actual!:any
-  password_nueva: string = '';
-  confirmarPassword: string = '';
 
-  constructor(private router: Router, private db: DbService, private activedroute: ActivatedRoute, private alertController: AlertController) { }
+  constructor(
+    private router: Router,
+    private db: DbService,
+    private alertController: AlertController,
+    private activedroute: ActivatedRoute
+  ) { }
 
   ngOnInit() {
     this.activedroute.queryParams.subscribe(res=>{
@@ -28,21 +33,31 @@ export class CambiarpasswordPage implements OnInit {
     const existePassword = await this.db.verificarPassword(this.password_actual, this.usuarioRecibido.id_usuario);
   
     if (!existePassword) {
-      this.presentAlert('Contraseña no coincide', 'Ingresa tu contraseña');
+      this.presentAlert('Contraseña no coincide', 'Ingresa tu contraseña actual');
       return;
     }
   
-    if (this.password_nueva.trim() === '' || this.confirmarPassword.trim() === '') {
+    if (this.password_nueva.trim() === '' || this.confirmar_password.trim() === '') {
       this.presentAlert('Campo vacío', 'Los campos no pueden estar vacíos');
       return;
     }
   
-    if (this.password_nueva !== this.confirmarPassword) {
+    if (this.password_nueva !== this.confirmar_password) {
       this.presentAlert('Contraseñas no coinciden', 'Asegúrate de que las contraseñas coincidan');
       return;
     }
   
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+    if (!passwordRegex.test(this.password_nueva)) {
+      this.presentAlert(
+        'Contraseña no segura',
+        'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial'
+      );
+      return;
+    }
+  
     await this.db.modificarPassword(this.usuarioRecibido.id_usuario, this.password_nueva);
+    this.presentAlert('Exito','Contraseña modificada con exito')
     this.router.navigate(['/cuenta']);
   }
 
@@ -54,5 +69,4 @@ export class CambiarpasswordPage implements OnInit {
     })
     await alert.present();
   }
-
 }

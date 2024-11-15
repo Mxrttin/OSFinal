@@ -26,11 +26,6 @@ import { AlertController } from '@ionic/angular';
 
             <!-- Elementos para usuarios logueados -->
             <ng-container *ngIf="userId">
-              <ion-item [routerDirection]="'root'" [routerLink]="'/carrito'">
-                <ion-icon slot="start" name="cart"></ion-icon>
-                <ion-label>Carrito</ion-label>
-              </ion-item>
-
               <ion-item [routerDirection]="'root'" [routerLink]="'/cuenta'">
                 <ion-icon slot="start" name="person"></ion-icon>
                 <ion-label>Cuenta</ion-label>

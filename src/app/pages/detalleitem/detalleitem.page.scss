@@ -42,3 +42,56 @@ ion-footer {
     }
 }
 
+.talla-container {
+  padding: 10px;
+  
+  .talla-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .talla-button {
+    --border-radius: 4px;
+    min-width: 45px;
+    
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
+
+// Para los botones no seleccionados
+ion-button[color="light"] {
+  --ion-color-light: #f4f4f4;
+  --ion-color-light-contrast: #000000;
+  --border: 1px solid #ddd;
+}
+
+// Para el botón seleccionado
+ion-button[color="tertiary"] {
+  --ion-color-tertiary: #7c4dff;
+  --ion-color-tertiary-contrast: #ffffff;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(25%, -25%);
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 50%;
+  min-width: 18px;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-button {
+  position: relative; // Para posicionar el badge correctamente
+}
+

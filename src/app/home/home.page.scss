@@ -49,3 +49,22 @@ ion-header{
 ion-content{
   background-color:black
 }
+
+ion-button {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(25%, -25%);
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 50%;
+  min-width: 18px;
+  min-height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

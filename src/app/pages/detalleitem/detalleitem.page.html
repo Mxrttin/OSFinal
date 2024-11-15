@@ -7,6 +7,11 @@
     <ion-buttons slot="end" [routerLink]="'/carrito'">
       <ion-button fill="clear" size="large" color="dark">
         <ion-icon name="bag-handle" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="cantidadProductosCarrito > 0" 
+                   color="tertiary" 
+                   class="cart-badge">
+          {{cantidadProductosCarrito}}
+        </ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -28,11 +33,20 @@
         </p>
       </ion-label>
 
-      <ion-item>
-        <ion-select label="Talla" placeholder="Seleccione una talla" [(ngModel)]="tallaSeleccionada">
-          <ion-select-option color="light" value="{{talla.nombre}}" *ngFor="let talla of arregloTalla">{{talla.nombre}}</ion-select-option>
-        </ion-select>
-      </ion-item>
+      <div class="talla-container">
+        <ion-text color="dark"><b>Talla:</b></ion-text>
+        <div class="talla-buttons">
+          <ion-button 
+            *ngFor="let talla of arregloTalla"
+            (click)="seleccionarTalla(talla.nombre)"
+            [color]="isTallaSeleccionada(talla.nombre) ? 'tertiary' : 'light'"
+            fill="solid"
+            size="small"
+            class="talla-button">
+            {{talla.nombre}}
+          </ion-button>
+        </div>
+      </div>
 
       <ion-item>
         <b>Stock Disponible: {{productoRecibido.stock}}</b>

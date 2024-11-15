@@ -20,14 +20,17 @@
         <p>Precio: ${{ producto.precio * producto.cantidad }}</p>
       </ion-label>
       <ion-buttons slot="end">
-        <ion-button color="dark" (click)="reducirCantidad(producto)">
+        <ion-button color="tertiary" (click)="reducirCantidad(producto)">
           <ion-icon name="remove"></ion-icon>
         </ion-button>
-        <ion-button color="dark" (click)="incrementarCantidad(producto)">
+        <ion-text class="cantidad-text">{{ producto.cantidad }}</ion-text>
+        <ion-button color="tertiary" 
+                    (click)="incrementarCantidad(producto)"
+                    [disabled]="producto.cantidad >= 5">
           <ion-icon name="add"></ion-icon>
         </ion-button>
-        <ion-button color="dark" (click)="eliminarProducto(producto)">
-          <ion-icon color="dark" name="trash"></ion-icon>
+        <ion-button color="danger" (click)="eliminarProducto(producto)">
+          <ion-icon name="trash"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-item>

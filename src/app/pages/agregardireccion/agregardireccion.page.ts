@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ApiService } from 'src/app/services/api.service';
 import { DbService } from 'src/app/services/db.service';
 
 @Component({
@@ -24,14 +25,18 @@ export class AgregardireccionPage implements OnInit {
       nombre: '',
       region:''
     }
+    
   ]
 
-  constructor(private router: Router, private db: DbService, private activedroute: ActivatedRoute, private alertController: AlertController) { 
+  arregloApi!: any;
+
+  constructor(private router: Router, private db: DbService, private activedroute: ActivatedRoute, private alertController: AlertController, private api: ApiService) { 
     this.activedroute.queryParams.subscribe(res=>{
       if(this.router.getCurrentNavigation()?.extras.state){
         this.usuarioRecibido = this.router.getCurrentNavigation()?.extras?.state?.['usuarioEnviado']
       }
     })
+
   }
 
   ngOnInit() {

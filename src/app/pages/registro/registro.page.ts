@@ -16,10 +16,39 @@ export class RegistroPage implements OnInit {
   telefono!:number;
   password: string = '';
   confirmarPassword: string = '';
+  mostrarPassword: boolean = false;
+  mostrarConfirmarPassword: boolean = false;
+  clave: string = '';
+  confirmarClave: string = '';
 
   constructor(private router : Router , private alertController: AlertController , private toastController : ToastController, private db : DbService) { }
 
   ngOnInit() {
+  }
+
+  validarPassword(password: string): { valido: boolean, errores: string[] } {
+    const errores: string[] = [];
+    
+    if (password.length < 8) {
+      errores.push('- Mínimo 8 caracteres');
+    }
+    if (!/[A-Z]/.test(password)) {
+      errores.push('- Al menos una letra mayúscula');
+    }
+    if (!/[a-z]/.test(password)) {
+      errores.push('- Al menos una letra minúscula');
+    }
+    if (!/[0-9]/.test(password)) {
+      errores.push('- Al menos un número');
+    }
+    if (!/[@$!%*?&]/.test(password)) {
+      errores.push('- Al menos un carácter especial (@$!%*?&)');
+    }
+
+    return {
+      valido: errores.length === 0,
+      errores: errores
+    };
   }
 
   async registro() {
@@ -36,21 +65,17 @@ export class RegistroPage implements OnInit {
       return;
     }
   
+    // Validar contraseña
+    const validacionPassword = this.validarPassword(this.password);
+    if (!validacionPassword.valido) {
+      const mensaje = `La contraseña debe cumplir los siguientes requisitos:\n${validacionPassword.errores.join('\n')}`;
+      this.presentAlert("Contraseña Inválida", mensaje);
+      return;
+    }
+
     // Validación de coincidencia de contraseñas
     if (this.password !== this.confirmarPassword) {
       this.contraAlert();
-      return;
-    }
-  
-    // Validación de mayúscula en contraseña
-    if (!/[A-Z]/.test(this.password)) {
-      this.mayusculaAlert();
-      return;
-    }
-  
-    // Validación de número en contraseña
-    if (!/\d/.test(this.password)) {
-      this.numeroPassWordAlert();
       return;
     }
   
@@ -143,7 +168,7 @@ export class RegistroPage implements OnInit {
   async longitudPassWordAlert(){
     const alert = await this.alertController.create({// no me lo esta pezcando 
       header:"La contraseña es demasiado corta",
-      message:"La contraseña debe tener al menos 6 caracteres.",
+      message:"La contraseña debe tener al menos 8 caracteres.",
       buttons: ['OK'],
     });
     await alert.present();
@@ -168,8 +193,6 @@ export class RegistroPage implements OnInit {
     await alert.present();
   }
 
-
-
   async mayusculaAlert() {
   const alert = await this.alertController.create({
     header: "Contrasena invalida",
@@ -179,7 +202,6 @@ export class RegistroPage implements OnInit {
 
   await alert.present();
   }
-
 
   async rellenarAlert() {
   const alert = await this.alertController.create({
@@ -212,13 +234,71 @@ export class RegistroPage implements OnInit {
   await toast.present();
   }
 
-  async presentAlert(titulo:string,msj:string){
+  async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
-      header: titulo,
-      message: msj,
+      header: header,
+      message: message,
       buttons: ['OK'],
-    })
+      cssClass: 'custom-alert'
+    });
     await alert.present();
+  }
+
+  formatearRut(event: any) {
+    let rut = event.target.value;
+    
+    // Eliminar puntos y guión existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+    
+    // Eliminar cualquier caracter que no sea número o 'k'/'K'
+    rut = rut.replace(/[^0-9kK]/g, '');
+
+    // Limitar a 9 caracteres (8 dígitos + 1 verificador)
+    if (rut.length > 9) {
+      rut = rut.slice(0, 9);
+    }
+
+    if (rut.length > 1) {
+      // Separar número verificador
+      let cuerpo = rut.slice(0, -1);
+      let dv = rut.slice(-1).toUpperCase();
+      
+      // Formatear cuerpo con puntos
+      let rutFormateado = '';
+      for (let i = cuerpo.length; i > 0; i -= 3) {
+        rutFormateado = '.' + cuerpo.slice(Math.max(0, i - 3), i) + rutFormateado;
+      }
+      
+      // Eliminar el primer punto y agregar el guión y dv
+      rutFormateado = rutFormateado.slice(1) + '-' + dv;
+      
+      // Actualizar el valor del input
+      this.rut = rutFormateado;
+    } else {
+      this.rut = rut;
+    }
+  }
+
+  validarTelefono(event: any) {
+    let telefono = event.target.value;
+    
+    // Eliminar cualquier caracter que no sea número
+    telefono = telefono.replace(/\D/g, '');
+    
+    // Limitar a 9 dígitos
+    if (telefono.length > 9) {
+      telefono = telefono.slice(0, 9);
+    }
+    
+    this.telefono = telefono;
+  }
+
+  togglePassword() {
+    this.mostrarPassword = !this.mostrarPassword;
+  }
+
+  toggleConfirmarPassword() {
+    this.mostrarConfirmarPassword = !this.mostrarConfirmarPassword;
   }
 
 }

@@ -7,16 +7,16 @@
       OcultoStudio
     </ion-title>
     <ion-buttons slot="end" [routerLink]="'/carrito'">
-      <ion-button
-      fill="clear"
-      size="large"
-      color="dark" > <!--bag para verificar el carrito-->
-      <ion-icon name="bag-handle" slot="icon-only"></ion-icon>
-    </ion-button>
+      <ion-button fill="clear" size="large" color="dark">
+        <ion-icon name="bag-handle" slot="icon-only"></ion-icon>
+        <ion-badge *ngIf="cantidadProductosCarrito > 0" 
+                   color="tertiary" 
+                   class="cart-badge">
+          {{cantidadProductosCarrito}}
+        </ion-badge>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  
-
 </ion-header>
 
 <ion-content>

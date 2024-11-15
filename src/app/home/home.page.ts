@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {  NavigationExtras, Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { DbService } from '../services/db.service';
+import { CarritoService } from '../services/carrito.service';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,17 @@ import { DbService } from '../services/db.service';
 export class HomePage implements OnInit {
 
   arregloProductos: any ;
+  cantidadProductosCarrito: number = 0;
 
-  constructor(private router: Router, private db: DbService) {}
+  constructor(
+    private router: Router,
+    private db: DbService,
+    private carritoService: CarritoService
+  ) {
+    this.carritoService.carrito$.subscribe(items => {
+      this.cantidadProductosCarrito = items.reduce((total, item) => total + item.cantidad, 0);
+    });
+  }
 
   ngOnInit () {
     this.db.dbState().subscribe(data =>{
